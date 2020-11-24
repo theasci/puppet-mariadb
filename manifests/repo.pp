@@ -5,6 +5,7 @@
 class mariadb::repo (
   Pattern[/^\d+\.?\d*$/] $repo_version = $mariadb::params::repo_version,
   Boolean $percona_repo = false,
+  String $module_hotfixes = '0',
 ) inherits mariadb::params {
 
   $os = $::operatingsystem ? {
