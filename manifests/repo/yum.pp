@@ -8,13 +8,19 @@ class mariadb::repo::yum {
   $arch            = $mariadb::repo::arch
   $module_hotfixes = $mariadb::repo::module_hotfixes
 
+  if $module_hotfixes == '1' {
+    $addon = {'module_hotfixes' => $module_hotfixes}
+  } else {
+    $addon = {}
+  }
+
   yumrepo { 'mariadb':
     baseurl         => "http://yum.mariadb.org/${version}/${os}${::operatingsystemmajrelease}-${arch}",
     descr           => 'MariaDB',
     enabled         => '1',
     gpgcheck        => '1',
-    module_hotfixes => $module_hotfixes,
     gpgkey          => 'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB',
+    * => $addon,
   }
   # lint:ignore:spaceship_operator_without_tag
   Yumrepo['mariadb'] -> Package<| |>
